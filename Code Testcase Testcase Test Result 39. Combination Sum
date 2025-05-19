@@ -1,0 +1,33 @@
+class Solution {
+public:
+    //for unique combinations
+    set<vector<int>> s;
+
+    void combsum(vector<int>& arr, int i, vector<int> &comb, vector<vector<int>> &ans,int tar){
+        int n=arr.size();
+        if(i==n || tar<0){
+            return;
+        }
+        if(tar==0){
+            if(s.find(comb) == s.end()){
+                ans.push_back({comb});
+                s.insert(comb);
+            }
+            return;
+        }
+        comb.push_back(arr[i]);
+        //single choice
+        combsum(arr,i+1,comb,ans,tar-arr[i]);
+        //multiple choice
+        combsum(arr,i,comb,ans,tar-arr[i]);
+        //excluding choice
+        comb.pop_back(); 
+        combsum(arr,i+1,comb,ans,tar);
+    }
+    vector<vector<int>> combinationSum(vector<int>& arr, int target) {
+        vector<vector<int>> ans;
+        vector<int> comb;
+        combsum(arr,0,comb,ans,target);
+        return ans;
+    }
+};
